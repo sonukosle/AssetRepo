@@ -1,4 +1,4 @@
-package com.asset.modal;
+package com.asset.model;
 
 import lombok.*;
 
@@ -10,14 +10,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Data
 @Entity
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int role_id;
-    private String role_name;
-
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "role")
+    @Column(name = "role_name")
+    private String roleName;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "emp_id")
     private List<Employee> employees;
 
 }

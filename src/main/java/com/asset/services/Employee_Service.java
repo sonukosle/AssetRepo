@@ -1,7 +1,8 @@
 package com.asset.services;
 
+import com.asset.dto.EmployeeDto;
 import com.asset.helper.UserFoundException;
-import com.asset.modal.Employee;
+import com.asset.model.Employee;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
