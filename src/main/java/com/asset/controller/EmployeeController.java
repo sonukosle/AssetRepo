@@ -1,9 +1,10 @@
 package com.asset.controller;
 
 import com.asset.dto.EmployeeDto;
+import com.asset.dto.EmployeeLoginDto;
 import com.asset.helper.UserFoundException;
 import com.asset.model.Employee;
-import com.asset.services.impl.Employee_Service_Impl;
+import com.asset.services.Employee_Service;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,30 +20,39 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
-    private Employee_Service_Impl employee_service_Impl;
+    private Employee_Service employee_service;
 
     @Autowired
     public ModelMapper modelMapper;
 
     @PostMapping("/addemployee")
-    public ResponseEntity<EmployeeDto> addEmployee(@RequestBody Employee employee) throws UserFoundException {
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) throws UserFoundException {
 
 //        EmployeeDto employee1 = this.employee_service_Impl.createEmployee(employee);
 
-        EmployeeDto map = modelMapper.map(employee, EmployeeDto.class);
-        return new ResponseEntity<EmployeeDto>(map, HttpStatus.CREATED);
+//        EmployeeDto map = modelMapper.map(employeeDto, EmployeeDto.class);
+        Employee employee_Created = employee_service.createEmployee(employee);
+        return new ResponseEntity<Employee>(employee_Created, HttpStatus.CREATED);
     }
 
 
     @GetMapping("/getall")
     public ResponseEntity<?> getAll() {
-
-        List<Employee> allEmployee = this.employee_service_Impl.getAllEmployee();
-
-
+        List<EmployeeDto> allEmployee = this.employee_service.getAllEmployee();
         return ResponseEntity.ok(allEmployee);
-
     }
 
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody EmployeeLoginDto employeeLoginDto) {
+
+        try {
+            this.employee_service.login(employeeLoginDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok().body("Login Succeed !!");
+
+    }
 
 }

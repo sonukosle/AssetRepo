@@ -1,23 +1,28 @@
 package com.asset.services.impl;
 
 import com.asset.dto.EmployeeDto;
+import com.asset.dto.EmployeeLoginDto;
 import com.asset.helper.UserFoundException;
-import com.asset.model.Asset_raise_request;
 import com.asset.model.Employee;
 import com.asset.repo.Employee_Repo;
 import com.asset.services.Employee_Service;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class Employee_Service_Impl implements Employee_Service {
 
     @Autowired
     private Employee_Repo employee_repo;
+
+    @Autowired
+    public ModelMapper modelMapper;
 
     @Override
     public Employee createEmployee(Employee employee) throws UserFoundException {
@@ -32,10 +37,12 @@ public class Employee_Service_Impl implements Employee_Service {
 
             throw new UserFoundException();
         } else {
-
+//            Employee employeeMap = modelMapper.map(, Employee.class);
             e = this.employee_repo.save(employee);
 
 //           e = modelMapper.map(employee, EmployeeDto.class);
+
+
         }
 
         return e;
@@ -71,10 +78,52 @@ public class Employee_Service_Impl implements Employee_Service {
 //
 //    }
 
+    private EmployeeDto convertEntityToDto(Employee employee) {
+
+//        modelMapper.getConfiguration()
+//                .setMatchingStrategy(MatchingStrategies.LOOSE);
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto = modelMapper.map(employee, EmployeeDto.class);
+        return employeeDto;
+    }
+
 
     @Override
-    public List<Employee> getAllEmployee() {
-        List<Employee> all_employee = this.employee_repo.findAll();
-        return all_employee;
+    public List<EmployeeDto> getAllEmployee() {
+        return this.employee_repo.findAll()
+                .stream()
+                .map(this::convertEntityToDto).collect(Collectors.toList());
+
+    }
+
+
+    private EmployeeLoginDto convertEntityToDtoLogin(Employee employee) {
+
+//        modelMapper.getConfiguration()
+//                .setMatchingStrategy(MatchingStrategies.LOOSE);
+        EmployeeLoginDto employeeLoginDto = new EmployeeLoginDto();
+        employeeLoginDto = modelMapper.map(employee, EmployeeLoginDto.class);
+        return employeeLoginDto;
+    }
+
+
+    @Override
+    public Optional<?> login(EmployeeLoginDto employeeLoginDto) {
+
+        Employee employee = this.employee_repo.findByEmail(employeeLoginDto.getEmail());
+            Optional<Employee>    employeecheck =  Optional.of(employee);
+
+        if(employeecheck.isPresent()){
+
+            System.out.println("Record matched");
+//            Optional.of("Record not matched!!");
+        }else {
+
+//            Optional.of("Successfully login");
+            System.out.println("Record not matched !!");
+
+        }
+
+        return Optional.of(employeeLoginDto);
     }
 }

@@ -1,11 +1,13 @@
 package com.asset.services;
 
 import com.asset.dto.EmployeeDto;
+import com.asset.dto.EmployeeLoginDto;
 import com.asset.helper.UserFoundException;
 import com.asset.model.Employee;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface Employee_Service {
@@ -15,5 +17,8 @@ public interface Employee_Service {
 
 //    get all employee's
 
-    public List<Employee> getAllEmployee();
+    public List<EmployeeDto> getAllEmployee();
+
+
+    public Optional<?> login(EmployeeLoginDto employeeLoginDto);
 }

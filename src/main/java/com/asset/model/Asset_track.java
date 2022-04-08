@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 public class Asset_track {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "asset_track_id")
     private int assetTrackId;
     @Column(name = "shipping_id")
@@ -22,7 +22,7 @@ public class Asset_track {
     private String shippingCompany;
 //    private int asset_raise_id;
     @OneToOne
-    @JoinColumn(name = "asset_raised_id")
+    @JoinColumn(name = "asset_raised_request_id")
     private Asset_raise_request f_asset_raise_request;
    @Column(name = "shipping_expense")
     private double shippingExpense;
@@ -32,5 +32,8 @@ public class Asset_track {
     @ManyToOne
     @JoinColumn(name = "asset_raise_request_id")
     private Asset_raise_request assetRaiseRequest;
+
+    @OneToOne
+    private Employee employee;
 
 }

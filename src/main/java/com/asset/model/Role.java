@@ -1,5 +1,6 @@
 package com.asset.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,8 +19,9 @@ public class Role {
     private int role_id;
     @Column(name = "role_name")
     private String roleName;
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "emp_id")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "role")
+//    @JoinColumn(name = "emp_id")
+    @JsonIgnore
     private List<Employee> employees;
 
 }

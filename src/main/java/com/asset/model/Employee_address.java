@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Employee_address {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "employee_address_id")
     private int employeeAddressId;
     private String state;
@@ -28,6 +28,6 @@ public class Employee_address {
     private int pinCode;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "emp_id",insertable = false,updatable = false)
+    @JoinColumn(name = "emp_id")
     private Employee employee;
 }

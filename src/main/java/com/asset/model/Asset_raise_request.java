@@ -12,7 +12,7 @@ import java.util.List;
 public class Asset_raise_request {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "asset_raise_id")
     private int assetRaiseId;
 //    private int asset_id;
@@ -24,13 +24,13 @@ public class Asset_raise_request {
     private String assetReqName;
 //    private int employee_id;
     @OneToOne
-    @JoinColumn(name = "emp_id")
+    @JoinColumn(name = "emp_id",insertable = false, updatable = false)
     private Employee fEmployee;
     @Column(name = "approve_status")
     private boolean approveStatus;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "emp_id",insertable = false,updatable = false)
+    @JoinColumn(name = "emp_id")
     private Employee employee;
 
     @OneToMany(mappedBy = "assetRaiseRequest",cascade = CascadeType.ALL)
