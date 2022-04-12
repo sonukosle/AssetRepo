@@ -1,5 +1,6 @@
 package com.asset.controller;
 
+import com.asset.dto.EmployeeCustomDetailsDto;
 import com.asset.dto.EmployeeDto;
 import com.asset.dto.EmployeeLoginDto;
 import com.asset.helper.UserFoundException;
@@ -47,12 +48,20 @@ public class EmployeeController {
     public ResponseEntity<?> login(@RequestBody EmployeeLoginDto employeeLoginDto) {
 
         try {
-            this.employee_service.login(employeeLoginDto);
+            this.employee_service.employeeLogin(employeeLoginDto);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ResponseEntity.ok().body("Login Succeed !!");
 
+    }
+
+    @GetMapping("/customdata")
+    public ResponseEntity<?> getCustomData() {
+
+        List<EmployeeCustomDetailsDto> customDtaDto = this.employee_service.getCustomDtaDto();
+
+        return ResponseEntity.ok(customDtaDto);
     }
 
 }

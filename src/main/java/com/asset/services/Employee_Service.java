@@ -1,5 +1,6 @@
 package com.asset.services;
 
+import com.asset.dto.EmployeeCustomDetailsDto;
 import com.asset.dto.EmployeeDto;
 import com.asset.dto.EmployeeLoginDto;
 import com.asset.helper.UserFoundException;
@@ -20,5 +21,7 @@ public interface Employee_Service {
     public List<EmployeeDto> getAllEmployee();
 
 
-    public Optional<?> login(EmployeeLoginDto employeeLoginDto);
+    public EmployeeLoginDto employeeLogin(EmployeeLoginDto employeeLoginDto);
+
+    public List<EmployeeCustomDetailsDto>getCustomDtaDto();
 }

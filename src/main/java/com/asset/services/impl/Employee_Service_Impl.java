@@ -1,5 +1,6 @@
 package com.asset.services.impl;
 
+import com.asset.dto.EmployeeCustomDetailsDto;
 import com.asset.dto.EmployeeDto;
 import com.asset.dto.EmployeeLoginDto;
 import com.asset.helper.UserFoundException;
@@ -7,12 +8,10 @@ import com.asset.model.Employee;
 import com.asset.repo.Employee_Repo;
 import com.asset.services.Employee_Service;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,7 +19,6 @@ public class Employee_Service_Impl implements Employee_Service {
 
     @Autowired
     private Employee_Repo employee_repo;
-
     @Autowired
     public ModelMapper modelMapper;
 
@@ -96,7 +94,6 @@ public class Employee_Service_Impl implements Employee_Service {
 
     }
 
-
     private EmployeeLoginDto convertEntityToDtoLogin(Employee employee) {
 
 //        modelMapper.getConfiguration()
@@ -108,22 +105,55 @@ public class Employee_Service_Impl implements Employee_Service {
 
 
     @Override
-    public Optional<?> login(EmployeeLoginDto employeeLoginDto) {
+    public EmployeeLoginDto employeeLogin(EmployeeLoginDto employeeLoginDto) {
 
-        Employee employee = this.employee_repo.findByEmail(employeeLoginDto.getEmail());
-            Optional<Employee>    employeecheck =  Optional.of(employee);
+        Employee employee= this.employee_repo.findByEmail(employeeLoginDto.getEmail());
+////        String email = null;
+//
+//        List<Employee> all = this.employee_repo.getAll();
+//       all.forEach(e->{
+//           System.out.println(e);
+//       });
 
-        if(employeecheck.isPresent()){
+//        Employee employeeE = this.employee_repo.findByEmail(employee.getEmail());
+
+//        Optional<Employee> employeecheck = Optional.of(employee);
+
+//        for (Employee e : byEmail
+//        ) {
+//            email = e.getEmail();
+//        }
+
+        if (employee.getEmail() == employeeLoginDto.getEmail()) {
 
             System.out.println("Record matched");
 //            Optional.of("Record not matched!!");
-        }else {
+
+        } else {
 
 //            Optional.of("Successfully login");
             System.out.println("Record not matched !!");
 
         }
 
-        return Optional.of(employeeLoginDto);
+        return employeeLoginDto;
+    }
+
+    @Override
+    public List<EmployeeCustomDetailsDto> getCustomDtaDto() {
+        return this.employee_repo.findAll()
+                .stream().
+                map(this::CustomEmployeeConvertEntityToDto)
+                .collect(Collectors.toList());
+
+
+    }
+
+
+    private EmployeeCustomDetailsDto CustomEmployeeConvertEntityToDto(Employee employee) {
+        EmployeeCustomDetailsDto employeeDto = new EmployeeCustomDetailsDto();
+        employeeDto = modelMapper.map(employee, EmployeeCustomDetailsDto.class);
+        return employeeDto;
+
     }
 }
